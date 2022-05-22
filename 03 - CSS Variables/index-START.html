@@ -21,6 +21,26 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    
+    /* AW NOTE */
+    /* CSS variables can be updated on the fly with JS, whereas SASS/SCSS variables are defined at compile time and can't be changed afterwards */
+
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
 
     /*
       misc styles, nothing to do with CSS variables
@@ -45,6 +65,32 @@
   </style>
 
   <script>
+    const inputs = document.querySelectorAll('.controls input');
+
+    /* AW NOTE */    
+    // this.dataset allows you to the data attributes for a specific element
+    function handleUpdate(){
+      const suffix = this.dataset.sizing || '';
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+      console.log(suffix); 
+    }
+
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+
+    // Extra
+    // Only add mousemove event listener after mousedown event
+
+    function addChangeListener() {
+      inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+    }
+
+    function removeChangeListener() {
+      inputs.forEach(input => input.removeEventListener('mousemove', handleUpdate));
+    }
+
+    inputs.forEach(input => input.addEventListener('mousedown', addChangeListener));
+    inputs.forEach(input => input.addEventListener('mouseup', removeChangeListener));
+
   </script>
 
 </body>
